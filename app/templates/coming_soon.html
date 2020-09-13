@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Coming Soon :)</title>
+</head>
+<body>
+<h1>Yale-NUS Laundry Viewer Coming Soon :)</h1>
+<button type="Trigger Call" id="TriggerCall">Trigger Call</button>
+<button type="Accept Call" id="AcceptCall">Accept Call</button>
+<button type="End Call" id="EndCall">End Call</button>
+
+
+<canvas width="640" height="360">
+    Your browser does not support HTML5 canvas
+  </canvas>
+
+<!--<script>-->
+<!--function disp1(){-->
+    <!--console.log("MOUSE")-->
+<!--}-->
+
+<!--function disp2(){-->
+    <!--console.log("Wheel")-->
+<!--}-->
+
+<!--document.addEventListener("mousemove", disp1, false);-->
+<!--document.addEventListener("wheel", disp2, false);-->
+
+<!--document.body.addEventListener('keyup', function(event) {-->
+  <!--console.log(event.keyCode);-->
+<!--});-->
+<!--</script>-->
+
+<!--<script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>-->
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>-->
+
+
+<!--<script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="s ha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>-->
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>-->
+
+<script src="{{ url_for('static', filename='js/jquery-1.12.4.min.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/socket.io.js') }}" ></script>
+
+<script type="text/javascript" charset="utf-8">
+
+  $(document).ready(function() {
+      // Use a "/test" namespace.
+      // An application can open a connection on multiple namespaces, and
+      // Socket.IO will multiplex all those connections on a single
+      // physical channel. If you don't care about multiple channels, you
+      // can set the namespace to an empty string.
+      namespace = '/test';
+
+      // Connect to the Socket.IO server.
+      // The connection URL has the following format, relative to the current page:
+      //     http[s]://<domain>:<port>[/<namespace>]
+      var socket = io("http://localhost:5000/");
+
+      // Event handler for new connections.
+      // The callback function is invoked when a connection with the
+      // server is established.
+      socket.on('connect', function () {
+          console.log("CONNECTED")
+          socket.emit('my_event', {data: 'I\'m connected!'});
+      });
+
+      $(document.body).on('keyup', function(event) {
+          console.log(event.keyCode)
+            socket.emit("from_web_ringmouse", {data: event.keyCode});
+        });
+
+      $('#TriggerCall').click(function() {
+          console.log("triggering Call")
+       socket.emit('from_web_triggerCall', {data: 'Triggering Call'});
+
+      });
+
+       $('#EndCall').click(function() {
+          console.log("Ending Call")
+       socket.emit('from_web_endCall', {data: 'Ending Call'});
+
+      });
+
+       $('#AcceptCall').click(function() {
+          console.log("Accepting Call")
+       socket.emit('from_web_acceptCall', {data: 'Accepting Call'});
+
+      });
+  // $(document.body).addEventListener('keyup', function(event) {
+  // console.log(event.keyCode);
+});
+
+
+</script>
+
+</body>
+</html>
